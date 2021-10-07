@@ -1,18 +1,25 @@
 ﻿using HotChocolate;
+using HotChocolate.Data;
 using NewsApplication.Data;
 using NewsApplication.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace NewsApplication.GraphQL
 {
     public class Query
     {
-        public IQueryable<Platform> GetPlatforms([Service] AppDbContext context)
+        [UseDbContext(typeof(AppDbContext))]
+        [UseProjection]
+        public IQueryable<Platform> GetPlatforms([ScopedService] AppDbContext context)
         {
             return context.Platforms;
+        }
+
+        [UseDbContext(typeof(AppDbContext))]
+        [UseProjection]
+        public IQueryable<Command> GetCommands([ScopedService] AppDbContext context)
+        {
+            return context.Commands;
         }
     }
 }

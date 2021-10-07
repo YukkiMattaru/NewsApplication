@@ -25,11 +25,12 @@ namespace NewsApplication
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("ConnectionString")));
+            services.AddPooledDbContextFactory<AppDbContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("ConnectionString")));
 
             services
                 .AddGraphQLServer()
-                .AddQueryType<Query>();
+                .AddQueryType<Query>()
+                .AddProjections();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
