@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using NewsApplication.Data;
+using NewsApplication.GraphQL;
+using GraphQL.Server.Ui.Voyager;
 
 namespace NewsApplication
 {
@@ -24,6 +26,10 @@ namespace NewsApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("ConnectionString")));
+
+            services
+                .AddGraphQLServer()
+                .AddQueryType<Query>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,10 +44,13 @@ namespace NewsApplication
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapGraphQL();
+            });
+
+            app.UseGraphQLVoyager(new GraphQLVoyagerOptions()
+            {
+                GraphQLEndPoint = "/graphql",
+                Path = "/graphql-voyager"
             });
         }
     }
