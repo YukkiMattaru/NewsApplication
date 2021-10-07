@@ -4,12 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-
+using Microsoft.EntityFrameworkCore;
+using NewsApplication.Data;
 
 namespace NewsApplication
 {
@@ -27,7 +23,7 @@ namespace NewsApplication
 
         public void ConfigureServices(IServiceCollection services)
         {
-            
+            services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("ConnectionString")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
