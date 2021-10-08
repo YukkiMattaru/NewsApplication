@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using NewsApplication.Data;
 using NewsApplication.GraphQL;
 using GraphQL.Server.Ui.Voyager;
+using NewsApplication.GraphQL.Platforms;
+using NewsApplication.GraphQL.Commands;
 
 namespace NewsApplication
 {
@@ -30,7 +32,8 @@ namespace NewsApplication
             services
                 .AddGraphQLServer()
                 .AddQueryType<Query>()
-                .AddProjections();
+                .AddType<PlatformType>()
+                .AddType<CommandType>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
