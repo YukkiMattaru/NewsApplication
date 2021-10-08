@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,8 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using NewsApplication.Data;
 using NewsApplication.GraphQL;
 using GraphQL.Server.Ui.Voyager;
-using NewsApplication.GraphQL.Platforms;
-using NewsApplication.GraphQL.Commands;
+using NewsApplication.GraphQL.Articles;
+using NewsApplication.GraphQL.Rubricators;
 
 namespace NewsApplication
 {
@@ -33,9 +32,8 @@ namespace NewsApplication
                 .AddGraphQLServer()
                 .AddQueryType<Query>()
                 .AddMutationType<Mutation>()
-                .AddSubscriptionType<Subscription>()
-                .AddType<PlatformType>()
-                .AddType<CommandType>()
+                .AddType<ArticleType>()
+                .AddType<RubricatorType>()
                 .AddFiltering()
                 .AddSorting()
                 .AddInMemorySubscriptions();

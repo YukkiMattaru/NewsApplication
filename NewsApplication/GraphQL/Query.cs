@@ -11,17 +11,17 @@ namespace NewsApplication.GraphQL
         [UseDbContext(typeof(AppDbContext))]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<Platform> GetPlatforms([ScopedService] AppDbContext context)
+        public IQueryable<Article> GetArticles([ScopedService] AppDbContext context)
         {
-            return context.Platforms;
+            return context.Articles;
         }
 
         [UseDbContext(typeof(AppDbContext))]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<Command> GetCommands([ScopedService] AppDbContext context)
+        public IQueryable<Rubricator> GetRubricators([ScopedService] AppDbContext context)
         {
-            return context.Commands;
+            return context.Rubricators;
         }
     }
 }

@@ -1,11 +1,10 @@
 ﻿using HotChocolate;
 using HotChocolate.Data;
-using HotChocolate.Subscriptions;
 using NewsApplication.Data;
-using NewsApplication.GraphQL.Commands;
-using NewsApplication.GraphQL.Platforms;
+using NewsApplication.GraphQL.Articles;
+using NewsApplication.GraphQL.Rubricators;
 using NewsApplication.Models;
-using System.Threading;
+using System;
 using System.Threading.Tasks;
 
 namespace NewsApplication.GraphQL
@@ -13,38 +12,65 @@ namespace NewsApplication.GraphQL
     public class Mutation
     {
         [UseDbContext(typeof(AppDbContext))]
-        public async Task<AddPlatformPayload> AddPlatformAsync(
-            AddPlatformInput input,
-            [ScopedService] AppDbContext context,
-            [Service] ITopicEventSender eventSender,
-            CancellationToken cancellationToken)
+        public async Task<AddRubricatorPayload> AddRubricatorAsync(
+            AddRubricatorInput input,
+            [ScopedService] AppDbContext context)
         {
-            var platform = new Platform
+            var rubricator = new Rubricator
             {
-                Name = input.Name
+                Path = input.Path,
+                Title = input.Title
             };
 
-            context.Platforms.Add(platform);
-            await context.SaveChangesAsync(cancellationToken);
+            context.Rubricators.Add(rubricator);
+            await context.SaveChangesAsync();
 
-            await eventSender.SendAsync(nameof(Subscription.OnPlatformAdded), platform, cancellationToken);
-
-            return new AddPlatformPayload(platform);
+            return new AddRubricatorPayload(rubricator);
         }
 
         [UseDbContext(typeof(AppDbContext))]
-        public async Task<AddCommandPayload> AddCommandAsync(AddCommandInput input, [ScopedService] AppDbContext context)
+        public async Task<AddArticlePayload> AddArticleAsync(AddArticleInput input, [ScopedService] AppDbContext context)
         {
-            var command = new Command
+            var article = new Article
             {
-                HowTo = input.HowTo,
-                PlatformId = input.PlatformId,
-                CommandLine = input.CommandLine
+                Title = input.Title,
+                Body = input.Body,
+                RubricatorId = input.RubricatorId,
+                Announce = input.Announce,
+                PublicationTime = DateTime.Now
             };
-            context.Commands.Add(command);
+            context.Articles.Add(article);
             await context.SaveChangesAsync();
 
-            return new AddCommandPayload(command);
+            return new AddArticlePayload(article);
+        }
+
+        [UseDbContext(typeof(AppDbContext))]
+        public async Task<RemovePayload> RemoveArticleAsync(RemoveArticleInput input, [ScopedService] AppDbContext context)
+        {
+            var articleToDelete = context.Articles.Find(input.Id);
+            if (articleToDelete == null)
+            {
+                return new RemovePayload(false, "Новость с заданным ID не найдена");
+            }
+            context.Articles.Remove(articleToDelete);
+            await context.SaveChangesAsync();
+
+            return new RemovePayload(true, "");
+        }
+
+        [UseDbContext(typeof(AppDbContext))]
+        public async Task<RemovePayload> RemoveRubricatorAsync(RemoveRubricatorInput input, [ScopedService] AppDbContext context)
+        {
+            var rubricatorToDelete = context.Rubricators.Find(input.Id);
+            if (rubricatorToDelete == null)
+            {
+                return new RemovePayload(false, "Рубрика с заданным ID не найдена");
+            }
+            context.Rubricators.Remove(rubricatorToDelete);
+            await context.SaveChangesAsync();
+
+            return new RemovePayload(true, "");
         }
     }
 }
