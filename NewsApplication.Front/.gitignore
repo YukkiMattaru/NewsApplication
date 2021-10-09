@@ -1,0 +1,9 @@
+# Secrets
+
+# Build artifacts
+/.next
+/node_modules
+/npm-debug.log
+/out
+
+/.idea

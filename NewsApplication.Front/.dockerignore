@@ -1,0 +1,13 @@
+# Common
+/.git
+/.idea
+
+# Docker files
+/Dockerfile
+/.dockerignore
+
+# Build artifacts
+/.next
+/out
+/node_modules
+/npm-debug.log
