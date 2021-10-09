@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { faNewspaper } from '@fortawesome/free-regular-svg-icons/faNewspaper';
 import styled from 'styled-components';
+import Navbar from './Navbar';
 
 const Header: React.FC = () => {
   return (
@@ -10,6 +11,7 @@ const Header: React.FC = () => {
         <TitleBlock>
           <FontAwesomeIcon icon={faNewspaper} size="2x" color="rgb(250, 250, 250)" />
           <PrimaryTitle>Новости</PrimaryTitle>
+          <Navbar />
         </TitleBlock>
       </HeaderContainer>
     </StyledHeader>

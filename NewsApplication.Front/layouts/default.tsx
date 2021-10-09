@@ -6,7 +6,7 @@ import Header from '../components/Header';
 
 const DefaultLayout: React.FC = (props) => {
   const apolloClient = new ApolloClient({
-    uri: `${process.env.API_BASE_URL}/graphql`,
+    uri: `${process.env.NEXT_PUBLIC_API_BASE_URL}/graphql`,
     cache: new InMemoryCache(),
   });
 

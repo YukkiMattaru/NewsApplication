@@ -1,18 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Guid } from 'guid-typescript';
+import { useQuery } from '@apollo/client';
+import GET_ALL_RUBRICATORS from '../graphql/queries/getAllRubricators';
+import { GetAllRubricators } from '../graphql/queries/__generated__/GetAllRubricators';
 
-interface Rubricator {
-  id: Guid;
-  title: string;
-  path: string;
-}
+const Navbar: React.FC = () => {
+  const { loading: isRubricatorsLoading, error: rubricatorsError, data: rubricators } = useQuery<GetAllRubricators>(GET_ALL_RUBRICATORS);
 
-const Navbar: React.FC<Rubricator[]> = ({ rubricator }) => {
+  if (isRubricatorsLoading) return <>Loading...</>;
+  if (rubricatorsError) return <>{rubricatorsError.message}</>;
+  console.log(rubricators);
   return (
-    <NavbarContainer>
-      {Rubricator}
-    </NavbarContainer>
+    <NavbarContainer />
   );
 };
 

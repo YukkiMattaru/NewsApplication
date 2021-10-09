@@ -1,0 +1,172 @@
+# This file was generated based on "schema.json". Do not edit manually.
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type AddArticlePayload {
+  article: Article
+}
+
+type AddRubricatorPayload {
+  rubricator: Rubricator
+}
+
+"Сущность представляет собой одну отдельно взятую новость"
+type Article {
+  announce: String
+  body: String!
+  id: Uuid!
+  publicationTime: DateTime!
+  "Это рубрика, которой принадлежит новость"
+  rubricator: [Rubricator]
+  rubricatorId: Uuid!
+  title: String!
+}
+
+type Mutation {
+  addArticle(input: AddArticleInput): AddArticlePayload
+  addRubricator(input: AddRubricatorInput): AddRubricatorPayload
+  removeArticle(input: RemoveArticleInput): RemovePayload
+  removeRubricator(input: RemoveRubricatorInput): RemovePayload
+}
+
+type Query {
+  articles(order: [ArticleSortInput!], where: ArticleFilterInput): [Article]
+  rubricators(order: [RubricatorSortInput!], where: RubricatorFilterInput): [Rubricator]
+}
+
+type RemovePayload {
+  error: String
+  isRemoved: Boolean!
+}
+
+"Сущность представляет собой рубрику новостей"
+type Rubricator {
+  "Это новости, которые принадлежат рубрике"
+  articles: [Article]
+  id: Uuid!
+  path: String!
+  title: String!
+}
+
+enum SortEnumType {
+  ASC
+  DESC
+}
+
+input AddArticleInput {
+  announce: String = ""
+  body: String
+  rubricatorId: Uuid!
+  title: String
+}
+
+input AddRubricatorInput {
+  path: String
+  title: String
+}
+
+input ArticleFilterInput {
+  and: [ArticleFilterInput!]
+  announce: StringOperationFilterInput
+  body: StringOperationFilterInput
+  id: ComparableGuidOperationFilterInput
+  or: [ArticleFilterInput!]
+  publicationTime: ComparableDateTimeOperationFilterInput
+  rubricator: RubricatorFilterInput
+  rubricatorId: ComparableGuidOperationFilterInput
+  title: StringOperationFilterInput
+}
+
+input ArticleSortInput {
+  announce: SortEnumType
+  body: SortEnumType
+  id: SortEnumType
+  publicationTime: SortEnumType
+  rubricator: RubricatorSortInput
+  rubricatorId: SortEnumType
+  title: SortEnumType
+}
+
+input ComparableDateTimeOperationFilterInput {
+  eq: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  neq: DateTime
+  ngt: DateTime
+  ngte: DateTime
+  nin: [DateTime!]
+  nlt: DateTime
+  nlte: DateTime
+}
+
+input ComparableGuidOperationFilterInput {
+  eq: Uuid
+  gt: Uuid
+  gte: Uuid
+  in: [Uuid!]
+  lt: Uuid
+  lte: Uuid
+  neq: Uuid
+  ngt: Uuid
+  ngte: Uuid
+  nin: [Uuid!]
+  nlt: Uuid
+  nlte: Uuid
+}
+
+input ListFilterInputTypeOfArticleFilterInput {
+  all: ArticleFilterInput
+  any: Boolean
+  none: ArticleFilterInput
+  some: ArticleFilterInput
+}
+
+input RemoveArticleInput {
+  id: Uuid!
+}
+
+input RemoveRubricatorInput {
+  id: Uuid!
+}
+
+input RubricatorFilterInput {
+  and: [RubricatorFilterInput!]
+  articles: ListFilterInputTypeOfArticleFilterInput
+  id: ComparableGuidOperationFilterInput
+  or: [RubricatorFilterInput!]
+  path: StringOperationFilterInput
+  title: StringOperationFilterInput
+}
+
+input RubricatorSortInput {
+  id: SortEnumType
+  path: SortEnumType
+  title: SortEnumType
+}
+
+input StringOperationFilterInput {
+  and: [StringOperationFilterInput!]
+  contains: String
+  endsWith: String
+  eq: String
+  in: [String]
+  ncontains: String
+  nendsWith: String
+  neq: String
+  nin: [String]
+  nstartsWith: String
+  or: [StringOperationFilterInput!]
+  startsWith: String
+}
+
+
+scalar Uuid
+
+"The `DateTime` scalar represents an ISO-8601 compliant date time type."
+scalar DateTime

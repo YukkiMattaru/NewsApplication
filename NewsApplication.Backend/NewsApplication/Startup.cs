@@ -9,6 +9,7 @@ using NewsApplication.GraphQL;
 using GraphQL.Server.Ui.Voyager;
 using NewsApplication.GraphQL.Articles;
 using NewsApplication.GraphQL.Rubricators;
+using Microsoft.AspNetCore.Cors;
 
 namespace NewsApplication
 {
@@ -29,6 +30,7 @@ namespace NewsApplication
             services.AddPooledDbContextFactory<AppDbContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("ConnectionString")));
 
             services
+                .AddCors()
                 .AddGraphQLServer()
                 .AddQueryType<Query>()
                 .AddMutationType<Mutation>()
@@ -50,6 +52,11 @@ namespace NewsApplication
             app.UseWebSockets();
 
             app.UseRouting();
+
+            app.UseCors(options => options
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {
