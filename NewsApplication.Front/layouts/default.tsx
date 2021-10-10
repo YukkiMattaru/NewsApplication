@@ -11,26 +11,40 @@ const DefaultLayout: React.FC = (props) => {
   });
 
   return (
-    <Layout>
+    <>
       <ApolloProvider client={apolloClient}>
         <Head>
           <title>Новости</title>
           <meta property="og:title" content="Новости" key="title" />
         </Head>
-        <StyledHeader />
-        {props.children}
+        <Layout>
+          <StyledHeader />
+          <MainContent>
+            {props.children}
+          </MainContent>
+        </Layout>
       </ApolloProvider>
-    </Layout>
+    </>
   );
 };
 
 const Layout = styled.div`
   margin: 0 auto;
   padding: 0;
+  display: grid;
+  grid-template-rows: 63px 1fr;
+  min-height: 100%;
 `;
 
 const StyledHeader = styled(Header)`
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 63px;
+`;
 
+const MainContent = styled.div`
+  flex: 1 0 auto;
 `;
 
 export default DefaultLayout;
