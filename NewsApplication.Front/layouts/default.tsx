@@ -29,11 +29,9 @@ const DefaultLayout: React.FC = (props) => {
 };
 
 const Layout = styled.div`
-  margin: 0 auto;
-  padding: 0;
-  display: grid;
-  grid-template-rows: 63px 1fr;
-  min-height: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledHeader = styled(Header)`
@@ -44,7 +42,7 @@ const StyledHeader = styled(Header)`
 `;
 
 const MainContent = styled.div`
-  flex: 1 0 auto;
+  min-height: calc(100vh - 63px);
 `;
 
 export default DefaultLayout;
